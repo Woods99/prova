@@ -21,6 +21,7 @@ int main(){
         player_id = fork();
     } 
 }
+ciao
 
 
 
