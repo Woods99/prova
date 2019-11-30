@@ -1,6 +1,6 @@
 TARGET=main_shared
-OBJS=main_shared.o giocatore.o 
-TARGET2=main_shared giocatore
+OBJS=main_shared.o giocatore.o pedina.o
+TARGET2=main_shared giocatore 
 FLAGS=-std=c89 -Wpedantic
 CC=gcc
 
@@ -19,6 +19,7 @@ $(TARGET2): $(OBJS)
 	$(CC) $(OBJS)
 
 prova1:$(OBJS)
+	gcc pedina.c -o pedina
 	gcc giocatore.c -o giocatore
 	gcc main_shared.c -o main_shared
 	#-std=c89 -pedantic
