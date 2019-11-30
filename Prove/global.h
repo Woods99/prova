@@ -8,6 +8,7 @@
 #define MY_KEY_STR 65
 #define MY_KEY_STRUCT 57
 #define MY_KEY_LETTER 64
+#define KEY_MEM_CONTLETT 60
 
 /*
  * Data structure of a matrix:
@@ -23,6 +24,7 @@ struct mat {
 	int rows;
 	int cols;
 	int pos[SO_ALTEZZA][SO_BASE];
+	char lett_cont[4];
 	char lettere[];
 };
 

@@ -6,7 +6,8 @@
 #include <unistd.h>
 #include "matrix.c"
 #include "global.h"
- 
+#include <string.h>
+
 
 
        
@@ -26,10 +27,10 @@ int main()
 
 	// ftok to generate unique key 
 	key_t key = ftok("shmfile",MY_KEY_STRUCT); 
-
+	key_t keylett = ftok("shmfile",KEY_MEM_CONTLETT); 
 	// shmget returns an identifier in shmid 
 	int shmid = shmget(key,100024,0666|IPC_CREAT); 
-
+	int shmidlett = shmget(keylett,100024,0666|IPC_CREAT);
 	
 	
 
@@ -42,28 +43,20 @@ int main()
 	m5->cols=60;
 	mat_fill_pos(m5);
 	mat_insert_data(m5);
+	int * cont_lett=shmat(shmidlett,NULL,0); 
+	cont_lett[0]=0;
 
-
-	key_t keylett = ftok("shmfile",MY_KEY_LETTER); 
-	int shmidlett=shmget (keylett ,1,0666|IPC_CREAT);
 	
-
-
+	
 	c_num_g=atoi(getenv("SO_NUM_G"));
 	pid_t child_pid;
-	char* env_vars[] = {
-		"SO_NUM_P=c_num_p",
-		NULL
-	};
-	
-	char* args[] = {
-		"c_num_p",    
-		NULL
-	};
-		
-		lettere(m5,c_num_g);
 	
 
+
+	lettere(m5,c_num_g);
+	char str[50];	
+	snprintf(str,sizeof(str),"%d",'c');
+	
 	for (int i=0; i<c_num_g; i++) {
 		switch (child_pid = fork()) {
 		case -1:
@@ -71,20 +64,21 @@ int main()
 			fprintf(stderr, "Error with the fork\n");
 			exit(EXIT_FAILURE);
 		case 0:
-			printf("Sono il figlio giocatore e Il mio PID è %5d (CHILD)\n",getpid());					 
-			execve("giocatore",args,env_vars);		
+			printf("Sono il figlio giocatore e Il mio PID è %5d (CHILD)\n",getpid());
+			sleep(0.3);					 
+			execlp("./giocatore",str,"abcd",(char *)0);		
 			break;
 			
 		default:
-			
+																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																											\
 			printf("Il PID del padre è %5d (PARENT)%d\n",getpid(), child_pid);
 			break;
 		}
 
 	}
-	sleep(1);
-	for(int i=0;i<2;i++)
-	printf("sono il padre e il valore in lettere %d è %d\n",i,m5->lettere[i]);
+	sleep(2);
+	for(int i=0;i<c_num_g;i++)
+	printf("sono il padre e il valore in lettere %d è %d\n",i,m5->lett_cont[i]);
 	//char * newstr;	
 	/*
 	printf("la strina prima di fare fgets %s",str);
