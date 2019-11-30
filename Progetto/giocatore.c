@@ -43,25 +43,23 @@ int shmid = shmget(key,1024,0666|IPC_CREAT);
 // shmat to attach to shared memory 
 
 struct mat * m4 = (struct mat *) shmat(shmid,(void*)0,0);
-m4=mat_read_alloc(); 
-mat_print(m4);
 
-struct mat * m5 = (struct mat *) shmat(shmid,(void*)0,0); 
-mat_print(m5);
 
-/*
+
+
+
 char* env_vars[] = {
 		NULL
 	};
 	
 	char* args[] = {
 		NULL
-	};*/
+	};
 /*
 if((getenv("SO_NUM_P"))==NULL)
 fprintf(stderr,"Errore variabile d'ambiente SO_NUM_P non presente\n");
-else{										//Poi inseriremo le variabili d'ambiente ottenute
-		get_env=getenv("SO_NUM_P");					//in un pezzo di memoria condivisa fra i processi
+else{										
+		get_env=getenv("SO_NUM_P");					
 		i=atoi(get_env);
 		//c_num_p=mycVar((*(get_env)),c_num_p);
 		

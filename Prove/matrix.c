@@ -2,8 +2,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include "global.h"
-
-
+#include "my_sem_lib.c"
+#include "assegnazioni.c"
 
 struct mat * mat_read_alloc()
 {
@@ -68,11 +68,11 @@ struct mat * mat_insert_flag_value(struct mat * in,int flag)
 
 void mat_print(const struct mat * m)
 {
-	unsigned int i, j;
+
 
 	
-	for(i=0; i<m->rows; i++) 
-		for(j=0; j<m->cols; j++){ 
+	for(int i=0; i<m->rows; i++) 
+		for(int j=0; j<m->cols; j++){ 
 			printf("%c",m->data[i][j]);
 			
 }
@@ -100,38 +100,44 @@ void mat_print_value(const struct mat * m)
 	
 }*/
 
-void * mat_fill_pos(struct mat * in)
+void  mat_fill_pos(struct mat * in)
 {
-	unsigned int i, j;
+
 	
-	for(i=0; i<in->rows; i++) 
-		for(j=0; j<in->cols; j++){ 
+	for(int i=0; i<in->rows; i++)
+		for(int j=0; j<in->cols; j++){
 			in->pos[i][j]=1;
-			in->data[i][j]='4';
-	}
-	return (void *)in->pos;
-}
-
-
-void * mat_insert_data(struct mat * in)
-{
-	unsigned int i, j;
+		}
 	
-	for(i=0; i<in->rows; i++) 
-		for(j=0; j<in->cols; j++){ 
-			in->data[i][j]='4';
-	}
-	return (void *)in->data;
+	
 }
+
+
+void mat_insert_data(struct mat * in)
+{
+
+	
+	for(int i=0; i<in->rows; i++)
+		for(int j=0; j<in->cols; j++){
+			in->data[i][j]='4';
+		}
+	
+	
+}
+
 
 void mat_print_pos(struct mat * in)
 {
 	unsigned int i, j;
+	printf("%d\n",in->rows);
+	printf("%d\n",in->cols);	
 
-	
-	for(i=0; i<in->rows; i++) 
-		for(j=0; j<in->cols; j++) 
+	for(i=0; i<in->rows; i++) {
+		for(j=0; j<in->cols; j++) {
 			printf("%d",in->pos[i][j]);
+			
+}
+}
 
 }
 

@@ -6,14 +6,19 @@
 #include <unistd.h>
 #include "matrix.c"
 #include "global.h"
+ 
+
+
+       
+
   
 int main() 
 { 
 	
 	
 	struct mat * m1, *m2, *m3;
-
-	m1=mat_read_alloc();
+	int ricalcolo=0;
+	int c_num_g;
 
 	//mat_print(m1);
 	
@@ -21,7 +26,7 @@ int main()
 
 	// ftok to generate unique key 
 	key_t key = ftok("shmfile",MY_KEY_STRUCT); 
-	
+
 	// shmget returns an identifier in shmid 
 	int shmid = shmget(key,100024,0666|IPC_CREAT); 
 
@@ -31,24 +36,20 @@ int main()
 	
 	// shmat to attach to shared memory 
 //	mat_print(m1);
+	
 	struct mat * m5 = (struct mat *) shmat(shmid,(void *)0,0); 
 	m5->rows=20;
 	m5->cols=60;
 	mat_fill_pos(m5);
 	mat_insert_data(m5);
-	
-//	m5->data=(char [])"\u2690";			
-//	m5->data=(unsigned char **)"w";
-//	printf("%s\n",(char *)*m5->data[0]);
-	
-//	m5->data[0]=**m4;
-//	mat_insert_data(m5);
-//	printf("%s\n",(char *)m4[1]);
-	mat_print(m5);
+
+
+	key_t keylett = ftok("shmfile",MY_KEY_LETTER); 
+	int shmidlett=shmget (keylett ,1,0666|IPC_CREAT);
 	
 
-	
 
+	c_num_g=atoi(getenv("SO_NUM_G"));
 	pid_t child_pid;
 	char* env_vars[] = {
 		"SO_NUM_P=c_num_p",
@@ -59,11 +60,11 @@ int main()
 		"c_num_p",    
 		NULL
 	};
-
+		
+		lettere(m5,c_num_g);
 	
-	
 
-	for (int i=0; i<2; i++) {
+	for (int i=0; i<c_num_g; i++) {
 		switch (child_pid = fork()) {
 		case -1:
 			
@@ -82,8 +83,8 @@ int main()
 
 	}
 	sleep(1);
-
-
+	for(int i=0;i<2;i++)
+	printf("sono il padre e il valore in lettere %d è %d\n",i,m5->lettere[i]);
 	//char * newstr;	
 	/*
 	printf("la strina prima di fare fgets %s",str);
@@ -91,7 +92,7 @@ int main()
 	fgets(str,sizeof(str),stdin); 
 	printf("Data written in memory: %s\n",str); */
 	//detach from shared memory  
-//	shmdt(m1); 
+	shmdt(m5); 
   
     return 0; 
 } 

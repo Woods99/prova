@@ -35,7 +35,8 @@ int n_flag_min=0;
 int n_flag_max=0;
 int flag=0;	
 
-/*
+
+
 //allocate shared memory
 // ftok to generate unique key 
 key = ftok("shmfile",MY_KEY_STR); 
@@ -46,16 +47,6 @@ shmid = shmget(key,1024,0666|IPC_CREAT);
 // shmat to attach to shared memory 
 	
 m1 = (struct mat *) shmat(shmid,(void*)0,0); 
-
-
-m1=mat_read_alloc();
-mat_print(m1);*/
-key = ftok("shmfile",MY_KEY_STR);
-shmid = shmget(key,1024,0666|IPC_CREAT);
-m1 = (struct mat *) shmat(shmid,(void*)0,0);
-printf("\n");
-
-mat_print(m1);
 
 
 
@@ -75,13 +66,10 @@ else{
 	n_flag_max=mycVar(get_env,n_flag_max);
 }
 
+
+m1=mat_read_alloc(m1);
 flag=mycFlag(n_flag_min,n_flag_max);
 m1=mat_insert_flag_value(m1,flag);
-mat_print_value(m1);
-
-
-
-
 mat_print(m1);
 
 

@@ -32,21 +32,56 @@ char* env_vars[] = {
 char* args[] = {
 	NULL
 };*/
-struct mat * m4;
+
 // ftok to generate unique key 
 	key_t key = ftok("shmfile",MY_KEY_STRUCT); 
 	
 
 	// shmget returns an identifier in shmid 
 	int shmid = shmget(key,1024,0666|IPC_CREAT); 
-
+	
 	// shmat to attach to shared memory 
 	
 	struct mat * m3 = (struct mat *) shmat(shmid,(void *)0,0); 
-	printf("%d\n",m3->rows);
-	printf("%d\n",m3->cols);
-	printf("%d\n",m3->pos[0][0]);
-	printf("%c\n",m3->data[0][0]);
+	
+
+	int value;
+	
+
+	key_t keylett = ftok("shmfile",MY_KEY_LETTER); 
+	int shmidlett=shmget (keylett ,3,0666|IPC_CREAT|IPC_STAT);
+	for (int i=0; i</*NUM_PROC*/2; i++) {
+		/* Only the first semaphore is available */
+		semctl(shmidlett, i, SETVAL,i ? 0 : 1);
+		
+	}
+	
+	for (int i=0; i<2; i++) {
+	for(int j=0; j<1; j++) {
+
+				/* try accessing semaphore i */
+				sem_reserve(shmidlett, i);
+				
+
+				value=m3->lettere[i];
+				
+
+				/* release semaphore i+1 */
+				sem_release(shmidlett, 0 );
+				
+
+			}
+printf("%c\n",value);
+}
+	
+	
+
+	
+	
+
+	
+	
+	
 	
 /*
 if((getenv("SO_NUM_P"))==NULL)
@@ -78,7 +113,7 @@ for (int i=0; i<c_num_p; i++) {
 		}
 
 	}*/
-shmdt(m4); 
+shmdt(m3); 
 
 
 exit(1);

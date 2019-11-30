@@ -18,14 +18,14 @@ int mycFlag(int n_flag_min,int n_flag_max){
 
 struct mat * myfillFlag(struct mat * m1,int flag){
 	int c_flag=0;
-	char * dato;
+//	char * dato;
 	int c_i=-1;
 	for(int i=0; i<m1->rows; i++) {
 		
 		for(int j=0; j<m1->cols; j++) {
-			dato=m1->data[j+i*m1->cols];
-			if(c_flag<flag && c_i!=i && dato!="-"){
-			m1->data[j+i*m1->cols]="\u2690";
+//			dato=m1->data[j+i*m1->cols];
+			if(c_flag<flag && c_i!=i && m1->data[i][j]!='.'){
+			m1->data[i][j]='~';
 			++c_flag;
 			c_i=i;
 			}

@@ -7,6 +7,7 @@
 #define SO_ALTEZZA 20
 #define MY_KEY_STR 65
 #define MY_KEY_STRUCT 57
+#define MY_KEY_LETTER 64
 
 /*
  * Data structure of a matrix:
@@ -22,7 +23,18 @@ struct mat {
 	int rows;
 	int cols;
 	int pos[SO_ALTEZZA][SO_BASE];
+	char lettere[];
 };
+
+
+
+
+union semun {
+    int val;
+    struct semid_ds *buf;
+    unsigned short  *array;
+};
+
 
 //[atoi(getenv("SO_ALTEZZA"))][atoi(getenv("SO_BASE"))]
 

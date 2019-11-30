@@ -36,12 +36,17 @@ struct mat * mat_read_alloc()
 	in = malloc(sizeof(*in));
 	in->rows=c_altezza;
 	in->cols=c_base;
-	in->data = malloc(sizeof(*in->data)*in->rows*in->cols);
-	in->pos = malloc(sizeof(*in->pos)*in->rows*in->cols);
+	
+	
+
+	
 	for(i=0; i<in->rows; i++) {
-		for(j=0; j<in->cols; j++) 
-			in->data[j+i*in->cols]=".";
+		for(j=0; j<in->cols; j++){ 
+			in->data[i][j]='.';
+			
 	}
+	}
+
 	return in;
 }
 
@@ -49,7 +54,7 @@ struct mat * mat_read_alloc()
 struct mat * mat_insert_flag_value(struct mat * in,int flag)
 {
 	unsigned int i, j;
-	char * dato;
+//	char * dato;
 	int c_flag=-1;
 	int score=0;	
 
@@ -62,10 +67,10 @@ struct mat * mat_insert_flag_value(struct mat * in,int flag)
 
 	for(i=0; i<in->rows; i++) {
 		for(j=0; j<in->cols; j++) {
-			dato=in->data[j+i*in->cols];
-			if(dato=="." && c_flag!=i && c_flag<flag-1){
-			in->data[j+i*in->cols]="\u2690";
-			in->pos[j+i*in->cols]=(score/flag);
+//			dato=in->data[j+i*in->cols];
+			if(in->data[i][j]=='.' && c_flag!=i && c_flag<flag-1){
+			in->data[i][j]='~';
+			in->pos[i][j]=(score/flag);
 			++c_flag;
 			}		
 		}
@@ -80,7 +85,7 @@ void mat_print(const struct mat * m)
 	
 	for(i=0; i<m->rows; i++) {
 		for(j=0; j<m->cols; j++) {
-			printf("%s",m->data[j+i*m->cols]);
+			printf("%c",m->data[i][j]);
 			
 
 		}
@@ -97,7 +102,7 @@ void mat_print_value(const struct mat * m)
 	
 	for(i=0; i<m->rows; i++) {
 		for(j=0; j<m->cols; j++) {
-			printf("%d",m->pos[j+i*m->cols]);
+			printf("%d",m->pos[i][j]);
 			
 
 		}

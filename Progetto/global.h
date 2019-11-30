@@ -14,6 +14,8 @@
 	struct mat * m1 = (struct mat *) shmat(shmid,(void*)0,0);\
 	m1=mat_read_alloc();\
 	}
+
+
 /*
  * Data structure of a matrix:
  *   - rows is the number of rows of the matrix
@@ -21,12 +23,11 @@
  *   - data is a pointer to the data (rows*cols)
  */
 
-
 struct mat {
-	unsigned char ** data;
+	char data[20][60];
 	int rows;
 	int cols;
-	int * pos;
+	int pos[20][60];
 };
 
 
