@@ -6,15 +6,9 @@
 #include <stdlib.h>
 
 
-#define MY_KEY_STR 62
-
-	#define memoria_condivisa(MY_KEY_STR){\
-	key = ftok("shmfile",MY_KEY_STR);\
-	shmid = shmget(key,1024,0666|IPC_CREAT);\
-	struct mat * m1 = (struct mat *) shmat(shmid,(void*)0,0);\
-	m1=mat_read_alloc();\
-	}
-
+#define MY_KEY_STRUCT 58
+#define KEY_GIOC_PED 57
+#define KEY_SOPS_RIS 64
 
 /*
  * Data structure of a matrix:
@@ -28,6 +22,8 @@ struct mat {
 	int rows;
 	int cols;
 	int pos[20][60];
+	int c_letter;
+	char lettere[];
 };
 
 

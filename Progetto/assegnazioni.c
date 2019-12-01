@@ -1,7 +1,7 @@
 #include <time.h>
 
 
-void lettere(struct mat *m,int n_proc){
+void insert_lettere(struct mat *m,int n_proc){
 int ricalcolo=0;
 	do{
 		srand(time(NULL));

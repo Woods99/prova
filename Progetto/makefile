@@ -19,6 +19,7 @@ $(TARGET2): $(OBJS)
 	$(CC) $(OBJS)
 
 prova1:$(OBJS)
+	gcc pedina.c -o pedina
 	gcc giocatore.c -o giocatore
 	gcc master.c -o master
 	#-std=c89 -pedantic

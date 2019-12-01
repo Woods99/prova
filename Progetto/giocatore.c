@@ -1,11 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/types.h>
-
 #include <sys/ipc.h>
 #include <sys/shm.h>
-
-
 #include <string.h>
 #include <sys/types.h>
 #include <unistd.h>
@@ -17,75 +14,76 @@ extern char **environ;  /* declared extern, defined by the OS somewhere */
 
 int main(int argc, char * argv[]) {
 
+	int child_pid;
+	char * get_env;	
+	key_t key_struct;
+	key_t key_gioc_ped;
+	struct mat * m3;
+	struct mat * m4;
+	struct mat * m5;
+	int c_num_p=0;
+	char arg_ecelp[50];
+	int value;
+	int shmid_gioc_ped;	
+	int shmid;
 
 
-
-int child_pid;
-char * get_env;	/*
-int c_num_p=0;
-int sum=0;
-int i;*/
-
-//printf("sono entrato nel file giocatore\n");
-
-
-
-
-
-
-
-//attach to the memory
-key_t key = ftok("shmfile",MY_KEY_STR); 
-
-// shmget returns an identifier in shmid 
-int shmid = shmget(key,1024,0666|IPC_CREAT); 
-
-// shmat to attach to shared memory 
-
-struct mat * m4 = (struct mat *) shmat(shmid,(void*)0,0);
-
-
-
-
-
-char* env_vars[] = {
-		NULL
-	};
+	// ftok to generate unique key 
+	key_struct = ftok("shmfile",MY_KEY_STRUCT); 
+	key_gioc_ped = ftok("shmfile",KEY_GIOC_PED);
 	
-	char* args[] = {
-		NULL
-	};
-/*
-if((getenv("SO_NUM_P"))==NULL)
-fprintf(stderr,"Errore variabile d'ambiente SO_NUM_P non presente\n");
-else{										
-		get_env=getenv("SO_NUM_P");					
-		i=atoi(get_env);
-		//c_num_p=mycVar((*(get_env)),c_num_p);
-		
+	// shmget returns an identifier in shmid 
+	shmid = shmget(key_struct,1024,0666|IPC_CREAT); 
+	shmid_gioc_ped=shmget(key_gioc_ped,1024,0666|IPC_CREAT); 
+	
+	// shmat to attach to shared memory 
+	m3 = (struct mat *) shmat(shmid,(void *)0,0);
+	m4 = (struct mat *) shmat(shmid_gioc_ped,(void *)0,0);
+
+
+	value=m3->lettere[m3->c_letter];
+	m3->c_letter+=1;
+	printf("sono il PID %d e  ho preso lo %d\n",getpid(),m3->c_letter);	
+	snprintf(arg_ecelp,sizeof(arg_ecelp),"%d",value);
+
+
+
+
+
+	if((getenv("SO_NUM_P"))==NULL)
+	fprintf(stderr,"Errore variabile d'ambiente SO_NUM_P non presente\n");
+	else{										//Poi inseriremo le variabili d'ambiente ottenute
+									//in un pezzo di memoria condivisa fra i processi
+		c_num_p=atoi(getenv("SO_NUM_P"));
 	}
-printf("%d\n",*(argv[3]));*/
+	printf("%d\n",c_num_p);
 
 
-/*
-for (int i=0; i<c_num_p; i++) {
+
+	shmdt(m3); 					//preparo lo staccamento della memoria
+	shmdt(m4); 
+	for (int i=0; i<c_num_p; i++) {
 		switch (child_pid = fork()) {
 		case -1:
 			fprintf(stderr, "Error with the fork\n");
 			exit(EXIT_FAILURE);
-		case 0:
-			printf("Sono il figlio pedina e Il mio PID è %5d (CHILD)  \n",getpid());					 
-			execve("pedina",env_vars,args);		//conta env_vars
+		case 0:					 
+			execlp("./pedina",arg_ecelp,(char*)0);		//conta env_vars
 			break;
 			
 		default:
-			printf("Il PID del padre è %5d (PARENT)%d\n",getpid(), child_pid);
-			
 			break;
 		}
 
-	}*/
-//shmdt(m4);	 
-exit(1);
+	}
+
+
+	sleep(1.5);
+	m5 = (struct mat *) shmat(shmid_gioc_ped,(void *)0,0);
+	m3=m5;
+	shmdt(m5);
+
+		 
+	exit(1);
 
 }

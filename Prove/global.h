@@ -2,14 +2,18 @@
 #define	_GLOBAL_H
 
 
+#define KEY_SOPS_RIS 64
+#define SO_BASE 10
+#define SO_ALTEZZA 5
 
-#define SO_BASE 60
-#define SO_ALTEZZA 20
-#define MY_KEY_STR 65
-#define MY_KEY_STRUCT 57
-#define MY_KEY_LETTER 64
-#define KEY_MEM_CONTLETT 60
+#define MY_KEY_STRUCT 58
+#define KEY_SOPS_RIS 64
+#define KEY_GIOC_PED 57
 
+#define ID_GIOCATORE_1	0
+#define ID_GIOCATORE_2	1
+#define INIT_GIOCATORE_1 2
+#define INIT_GIOCATORE_2 2
 /*
  * Data structure of a matrix:
  *   - rows is the number of rows of the matrix
@@ -23,22 +27,14 @@ struct mat {
 	char data[SO_ALTEZZA][SO_BASE];
 	int rows;
 	int cols;
-	int pos[SO_ALTEZZA][SO_BASE];
-	char lett_cont[4];
+	int pos[SO_ALTEZZA][SO_BASE];			
+	int c_letter;
 	char lettere[];
 };
 
 
 
 
-union semun {
-    int val;
-    struct semid_ds *buf;
-    unsigned short  *array;
-};
-
-
-//[atoi(getenv("SO_ALTEZZA"))][atoi(getenv("SO_BASE"))]
 
 struct mat * mat_read_alloc();
 
