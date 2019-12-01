@@ -8,6 +8,7 @@
 #include <unistd.h>
 #include "global.h"
 #include "matrix.c"
+#include <signal.h>
 
 
 extern char **environ;  /* declared extern, defined by the OS somewhere */
@@ -77,8 +78,8 @@ int main(int argc, char * argv[]) {
 
 	}
 
-
-	sleep(1.5);
+	sleep(1.3);
+	kill(getppid(),2);
 	m5 = (struct mat *) shmat(shmid_gioc_ped,(void *)0,0);
 	m3=m5;
 	shmdt(m5);

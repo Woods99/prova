@@ -8,18 +8,23 @@
 #include <math.h>
 #include "global.h"
 #include "matrix.c"
+#include <signal.h>
 
 
+void my_handler_sig(int signum){
+static int conteggio=0;
 
+printf("il giocatore %d ha piazzato le sue pedine\n",++conteggio);
 
+}
 
 
 
 extern char **environ;  /* declared extern, defined by the OS somewhere per printare le variabili globali*/
 
 int main(int argc, char * argv[]) {
+	struct sigaction sa;
 	struct mat * m1, * m2;
-	int * cont_lett;
 
 	key_t key_struct;
 	int shmid;	//id memory
@@ -38,6 +43,11 @@ int main(int argc, char * argv[]) {
 	int n_flag_max=0;
 	int flag=0;	
 
+
+	// start handle(gestire) signal
+	bzero(&sa, sizeof(sa));  /* set all bytes to zero */	
+	sa.sa_handler = my_handler_sig;
+	sigaction(SIGINT, &sa, NULL);	
 
 
 	if((getenv("SO_ALTEZZA"))==NULL)

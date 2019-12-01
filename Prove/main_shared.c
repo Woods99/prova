@@ -7,11 +7,16 @@
 #include "matrix.c"
 #include "global.h"
 #include <string.h>
+#include <signal.h>
 
 
+void my_handler_sig(int signum){
+static int conteggio=0;
 
+printf("il giocatore %d ha piazzato le sue pedine\n",++conteggio);
+
+}
        
-
   
 int main() 
 { 
@@ -19,7 +24,14 @@ int main()
 	key_t key_struct;
 	int shmid;
 	struct mat * m5;
+	struct sigaction sa;
 	int c_num_g;
+
+
+	// start handle(gestire) signal
+	bzero(&sa, sizeof(sa));  /* set all bytes to zero */	
+	sa.sa_handler = my_handler_sig;
+	sigaction(SIGINT, &sa, NULL);
 	
 
 	// ftok to generate unique key 
